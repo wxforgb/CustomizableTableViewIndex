@@ -16,8 +16,8 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "CustomizableTableViewIndex"
-  spec.version      = "0.0.1"
-  spec.summary      = "A short description of CustomizableTableViewIndex."
+  spec.version      = "0.0.3"
+  spec.summary      = "You can customize tableView's index view!"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -26,9 +26,10 @@ Pod::Spec.new do |spec|
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
   You can customize tableView's index view!
+  You can customize tableView's index view!
                    DESC
 
-  spec.homepage     = "http://EXAMPLE/CustomizableTableViewIndex"
+  spec.homepage     = "https://github.com/wxforgb/CustomizableTableViewIndex"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -88,7 +89,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "CustomizableTableViewIndex/**/*.{h,swift}"
+  spec.source_files  = "CustomizableTableViewIndex/*.swift"
 
   # spec.public_header_files = "Classes/**/*.h"
 

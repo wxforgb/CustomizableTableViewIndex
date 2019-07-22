@@ -7,17 +7,13 @@
 
 public class IndicatorView: UIView {
     
+    private var option: CustomizableTableViewIndexOption = CustomizableTableViewIndexOption()
     private var label: UILabel?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        prepareCircleView()
-        prepareLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    public func prepare(by option: CustomizableTableViewIndexOption? = nil) {
+        if let option = option {
+            self.option = option
+        }
         
         prepareCircleView()
         prepareLabel()
@@ -30,7 +26,7 @@ public class IndicatorView: UIView {
     
     private func prepareCircleView() {
         let circleView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
-        circleView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        circleView.backgroundColor = option.indicatorBackgroundColor
         circleView.layer.cornerRadius = self.frame.width * 0.5
         self.addSubview(circleView)
         
@@ -40,8 +36,8 @@ public class IndicatorView: UIView {
         label = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
         self.addSubview(label!)
         
-        label!.font = UIFont.boldSystemFont(ofSize: 32)
-        label!.textColor = UIColor.white
+        label!.font = option.indicatorFont
+        label!.textColor = option.indicatorColor
         label!.textAlignment = .center
     }
     

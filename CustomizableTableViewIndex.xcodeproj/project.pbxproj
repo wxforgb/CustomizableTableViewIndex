@@ -18,6 +18,7 @@
 		85D01FC522E02CBB004D0662 /* ValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D01FC422E02CBB004D0662 /* ValueCell.xib */; };
 		85D01FC722E15910004D0662 /* CustomizableTableViewIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D01FC622E1590F004D0662 /* CustomizableTableViewIndexController.swift */; };
 		85D01FC922E1995A004D0662 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D01FC822E1995A004D0662 /* IndicatorView.swift */; };
+		85D01FCD22E58703004D0662 /* CustomizableTableViewIndexOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D01FCC22E58703004D0662 /* CustomizableTableViewIndexOption.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		85D01FC422E02CBB004D0662 /* ValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ValueCell.xib; sourceTree = "<group>"; };
 		85D01FC622E1590F004D0662 /* CustomizableTableViewIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizableTableViewIndexController.swift; sourceTree = "<group>"; };
 		85D01FC822E1995A004D0662 /* IndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
+		85D01FCC22E58703004D0662 /* CustomizableTableViewIndexOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizableTableViewIndexOption.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				85D01FA022DF2A1D004D0662 /* CustomizableTableViewIndex.h */,
 				85D01FC622E1590F004D0662 /* CustomizableTableViewIndexController.swift */,
 				85D01FC822E1995A004D0662 /* IndicatorView.swift */,
+				85D01FCC22E58703004D0662 /* CustomizableTableViewIndexOption.swift */,
 				85D01FA122DF2A1D004D0662 /* Info.plist */,
 			);
 			path = CustomizableTableViewIndex;
@@ -220,6 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85D01FCD22E58703004D0662 /* CustomizableTableViewIndexOption.swift in Sources */,
 				85D01FC922E1995A004D0662 /* IndicatorView.swift in Sources */,
 				85D01FC722E15910004D0662 /* CustomizableTableViewIndexController.swift in Sources */,
 			);

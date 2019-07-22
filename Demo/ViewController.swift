@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     private let valueCellIdentifier = "ValueCell"
     private let rowData = [["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"]]
     private let sectionData = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    private let sectionData1 = ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"]
     
     
     override func viewDidLoad() {
@@ -25,9 +26,10 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.tableView.dataSource = self
+        self.tableView.delegate = self
         self.tableView.register(UINib(nibName: "ValueCell", bundle: nil), forCellReuseIdentifier: valueCellIdentifier)
         
-        self.customizableTableViewIndexController.initialize(labels: sectionData, superView: self.view, tableView: self.tableView)
+        self.customizableTableViewIndexController.initialize(labels: sectionData, tableView: self.tableView)
     }
 
 }
@@ -53,3 +55,22 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.customizableTableViewIndexController.reconfigure(by: sectionData.map { "\($0)\(indexPath.row)"} )
+    }
+    
+    
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        print("scrollViewWillBeginDragging")
+//        self.customizableTableViewIndexController.show()
+//    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.customizableTableViewIndexController.show()
+    }
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        print("scrollViewDidEndDecelerating")
+//        self.customizableTableViewIndexController.hide()
+//    }
+}

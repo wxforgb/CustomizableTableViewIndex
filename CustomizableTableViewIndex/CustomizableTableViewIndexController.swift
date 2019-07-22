@@ -9,46 +9,94 @@ import Foundation
 
 public class CustomizableTableViewIndexController: NSObject {
     
-    fileprivate var optionWidth: CGFloat = 20.0
-    fileprivate var optionFont: UIFont = UIFont.boldSystemFont(ofSize: 10)
-    fileprivate var optionColor: UIColor = UIColor.blue
+    fileprivate var option: CustomizableTableViewIndexOption = CustomizableTableViewIndexOption()
+    fileprivate let feedback = UIImpactFeedbackGenerator(style: .light)
     
-    fileprivate var optionIndicatorViewSize: CGFloat = 80
-    
-    fileprivate var labels: [String] = []
     fileprivate weak var superView: UIView?
     fileprivate weak var tableView: UITableView?
+    
+    fileprivate var labels: [String] = []
     
     fileprivate var indexView: UIView?
     fileprivate var indicatorView: UIView?
     fileprivate var currentSection: Int = 0
+    fileprivate var isPanning: Bool = false
+    fileprivate var hideWaitingSecond: Int = 3
+    fileprivate var countDownTimer: Timer?
     
-    fileprivate let feedback = UIImpactFeedbackGenerator(style: .light)
-    
-    public func initialize(labels: [String], superView: UIView, tableView: UITableView) {
+    public func initialize(labels: [String], tableView: UITableView, superView: UIView? = nil, option: CustomizableTableViewIndexOption? = nil) {
+        
+        if let superView = superView {
+            self.superView = superView
+        } else {
+            self.superView = tableView.superview
+        }
 
         self.labels = labels
-        self.superView = superView
         self.tableView = tableView
+        if let option = option {
+            self.option = option
+        }
         
+        self.countDownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(hideIfNecessary), userInfo: nil, repeats: true)
+
         self.prepareIndexView()
         self.prepareIndexLabelView()
         self.prepareIndicatorView()
     }
     
-    fileprivate func saveInput() {
-
+    public func reconfigure(by labels: [String]) {
+        self.labels = labels
+        self.prepareIndexLabelView()
     }
     
+    public func show(animated: Bool = true) {
+        guard let tableView = tableView else { return }
+        guard let indexView = indexView else { return }
+        guard indexView.isHidden else {
+            self.hideWaitingSecond = 3
+            return
+        }
+        indexView.isHidden = false
+        indexView.frame.origin.x = tableView.frame.maxX
+        if animated {
+            UIView.animate(withDuration: 1, delay: 0.0, options: [.curveEaseIn], animations: {
+                indexView.frame.origin.x = tableView.frame.maxX - self.option.indexViewWidth
+            }) { _ in
+
+            }
+        } else {
+            indexView.frame.origin.x -= self.option.indexViewWidth
+        }
+    }
+    
+    @objc func hideIfNecessary() {
+        guard !isPanning else { return }
+        guard hideWaitingSecond > 0 else { return }
+        hideWaitingSecond -= 1
+        
+        if hideWaitingSecond == 0 {
+            guard let tableView = tableView else { return }
+            guard let indexView = indexView else { return }
+            UIView.animate(withDuration: 1, delay: 0.0, options: [.curveEaseOut], animations: {
+                indexView.frame.origin.x += tableView.frame.maxX
+            }) { _ in
+                indexView.isHidden = true
+            }
+        }
+    }
+
+    
     fileprivate func prepareIndexView() {
+        guard self.option.enableScrollShow else { return }
         guard let superView = superView else { return }
         guard let tableView = tableView else { return }
         guard indexView == nil else { return }
         
         let tableViewFrame = tableView.frame
         let indexViewHeight = tableViewFrame.size.height
-        let indexViewWidth: CGFloat = optionWidth
-        let indexViewX = tableViewFrame.maxX - optionWidth
+        let indexViewWidth: CGFloat = self.option.indexViewWidth
+        let indexViewX = tableViewFrame.maxX - self.option.indexViewWidth
         let indexViewY = tableViewFrame.minY
         
         // add indexView as a subview of view (not tableView)
@@ -59,20 +107,22 @@ public class CustomizableTableViewIndexController: NSObject {
         gesture.delegate = self
         indexView!.addGestureRecognizer(gesture)
         
+        indexView!.isHidden = self.option.enableScrollShow
     }
     
     fileprivate func prepareIndexLabelView() {
         guard let indexView = indexView else { return }
+        indexView.subviews.forEach { $0.removeFromSuperview() }
         
         //calcuate label height
         let height = min(indexView.frame.height / CGFloat(self.labels.count), 28)
         let topMargin = (indexView.frame.height - height * CGFloat(labels.count)) / 2
         for index in 0..<labels.count {
-            let label = UILabel(frame: CGRect(x: 0, y: CGFloat(index) * height + topMargin, width: optionWidth, height: height))
+            let label = UILabel(frame: CGRect(x: 0, y: CGFloat(index) * height + topMargin, width: self.option.indexViewWidth, height: height))
             label.isUserInteractionEnabled = true
             label.text = labels[index]
-            label.font = optionFont
-            label.textColor = optionColor
+            label.font = self.option.font
+            label.textColor = self.option.color
             label.textAlignment = .center
             label.tag = index
             indexView.addSubview(label)
@@ -85,9 +135,9 @@ public class CustomizableTableViewIndexController: NSObject {
         guard indicatorView == nil else { return }
         
         let tableViewFrame = tableView.frame
-        let indicatorViewX = tableViewFrame.midX - optionIndicatorViewSize *  0.5
-        let indicatorViewY = tableViewFrame.midY - optionIndicatorViewSize *  0.5
-        indicatorView = IndicatorView(frame: CGRect(x: indicatorViewX, y: indicatorViewY, width: optionIndicatorViewSize, height: optionIndicatorViewSize))
+        let indicatorViewX = tableViewFrame.midX - self.option.indicatorSize *  0.5
+        let indicatorViewY = tableViewFrame.midY - self.option.indicatorSize *  0.5
+        indicatorView = IndicatorView(frame: CGRect(x: indicatorViewX, y: indicatorViewY, width: self.option.indicatorSize, height: self.option.indicatorSize))
         indicatorView?.isHidden = true
         superView.addSubview(indicatorView!)
         
@@ -95,6 +145,7 @@ public class CustomizableTableViewIndexController: NSObject {
     
     @objc func panAction(_ gesture: UIPanGestureRecognizer) {
         if gesture.state == UIGestureRecognizer.State.began {
+            isPanning = true
             let view = gesture.view
             let loc = gesture.location(in: view)
             guard let currentLabel = view?.hitTest(loc, with: nil) else { return }
@@ -114,6 +165,7 @@ public class CustomizableTableViewIndexController: NSObject {
                 indicatorView.configureLabel(by: self.labels[currentLabel.tag])
             }
         } else {
+            isPanning = false
             self.indicatorView?.isHidden = true
         }
     }
