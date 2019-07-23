@@ -78,7 +78,7 @@ public class CustomizableTableViewIndexController: NSObject {
         if hideWaitingSecond == 0 {
             guard let tableView = tableView else { return }
             guard let indexView = indexView else { return }
-            UIView.animate(withDuration: 1, delay: 0.0, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 1, delay: 0.0, options: [.curveEaseIn], animations: {
                 indexView.frame.origin.x += tableView.frame.maxX
             }) { _ in
                 indexView.isHidden = true
@@ -137,9 +137,11 @@ public class CustomizableTableViewIndexController: NSObject {
         let tableViewFrame = tableView.frame
         let indicatorViewX = tableViewFrame.midX - self.option.indicatorSize *  0.5
         let indicatorViewY = tableViewFrame.midY - self.option.indicatorSize *  0.5
-        indicatorView = IndicatorView(frame: CGRect(x: indicatorViewX, y: indicatorViewY, width: self.option.indicatorSize, height: self.option.indicatorSize))
-        indicatorView?.isHidden = true
-        superView.addSubview(indicatorView!)
+        let indicatorView = IndicatorView(frame: CGRect(x: indicatorViewX, y: indicatorViewY, width: self.option.indicatorSize, height: self.option.indicatorSize))
+        indicatorView.prepare(by: self.option)
+        indicatorView.isHidden = true
+        self.indicatorView = indicatorView
+        superView.addSubview(indicatorView)
         
     }
     
