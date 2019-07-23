@@ -16,9 +16,8 @@ class ViewController: UIViewController {
     // MARK: - private variables
     private let customizableTableViewIndexController = CustomizableTableViewIndexController()
     private let valueCellIdentifier = "ValueCell"
-    private let rowData = [["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"]]
-    private let sectionData = ["A", "B", "C", "D", "E", "F", "G", "H"]
-    private let sectionData1 = ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"]
+    private let rowData = [["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"], ["1", "2", "3"], ["4", "5", "6"]]
+    private let sectionData = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
     
     override func viewDidLoad() {

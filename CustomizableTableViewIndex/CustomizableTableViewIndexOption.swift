@@ -13,6 +13,8 @@ public struct CustomizableTableViewIndexOption {
     
     public var enableScrollShow: Bool = true
     
+    public var indexViewTopMargin: CGFloat = 52.0
+    public var indexViewBottomMargin: CGFloat = 100.0
     public var indexViewWidth: CGFloat = 20.0
     public var font: UIFont = UIFont.boldSystemFont(ofSize: 10)
     public var color: UIColor = UIColor.blue
