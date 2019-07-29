@@ -103,7 +103,7 @@ public class CustomizableTableViewIndexController: NSObject {
         let indexViewY = tableViewFrame.minY
         
         // add indexView as a subview of view (not tableView)
-        indexView = UIView(frame: CGRect(x: indexViewX, y: indexViewY, width: indexViewWidth, height: indexViewHeight))
+        indexView = UIView(frame: CGRect(x: indexViewX, y: indexViewY + self.option.indexViewTopMargin, width: indexViewWidth, height: indexViewHeight))
         superView.addSubview(indexView!)
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
