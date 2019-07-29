@@ -38,7 +38,9 @@ public class CustomizableTableViewIndexController: NSObject {
             self.option = option
         }
         
-        self.countDownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(hideIfNecessary), userInfo: nil, repeats: true)
+        if self.option.enableScrollShow {
+            self.countDownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(hideIfNecessary), userInfo: nil, repeats: true)
+        }
 
         self.prepareIndexView()
         self.prepareIndexLabelView()
@@ -51,6 +53,7 @@ public class CustomizableTableViewIndexController: NSObject {
     }
     
     public func show(animated: Bool = true) {
+        guard self.option.enableScrollShow else { return }
         guard let tableView = tableView else { return }
         guard let indexView = indexView else { return }
         guard indexView.isHidden else {
@@ -71,6 +74,7 @@ public class CustomizableTableViewIndexController: NSObject {
     }
     
     @objc func hideIfNecessary() {
+        guard self.option.enableScrollShow else { return }
         guard !isPanning else { return }
         guard hideWaitingSecond > 0 else { return }
         hideWaitingSecond -= 1
@@ -88,7 +92,6 @@ public class CustomizableTableViewIndexController: NSObject {
 
     
     fileprivate func prepareIndexView() {
-        guard self.option.enableScrollShow else { return }
         guard let superView = superView else { return }
         guard let tableView = tableView else { return }
         guard indexView == nil else { return }
@@ -100,7 +103,7 @@ public class CustomizableTableViewIndexController: NSObject {
         let indexViewY = tableViewFrame.minY
         
         // add indexView as a subview of view (not tableView)
-        indexView = UIView(frame: CGRect(x: indexViewX, y: indexViewY + self.option.indexViewTopMargin, width: indexViewWidth, height: indexViewHeight))
+        indexView = UIView(frame: CGRect(x: indexViewX, y: indexViewY, width: indexViewWidth, height: indexViewHeight))
         superView.addSubview(indexView!)
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))

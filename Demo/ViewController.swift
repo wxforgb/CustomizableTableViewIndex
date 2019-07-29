@@ -26,11 +26,29 @@ class ViewController: UIViewController {
         
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        self.tableView.backgroundColor = UIColor.blue
         self.tableView.register(UINib(nibName: "ValueCell", bundle: nil), forCellReuseIdentifier: valueCellIdentifier)
+
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        self.customizableTableViewIndexController.initialize(labels: sectionData, tableView: self.tableView)
+        var option = CustomizableTableViewIndexOption()
+        option.enableScrollShow = false
+        option.indexViewTopMargin = 0
+        option.indexViewBottomMargin = 0
+        self.customizableTableViewIndexController.initialize(labels: sectionData, tableView: self.tableView, option: option)
     }
 
+    func getDeviceSAFE() -> UIEdgeInsets {
+        if #available(iOS 11.0, *) {
+            if let insets = UIApplication.shared.keyWindow?.safeAreaInsets {
+                return insets
+            }
+        }
+        return UIEdgeInsets.zero
+    }
 }
 
 extension ViewController: UITableViewDataSource {
